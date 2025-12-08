@@ -3,6 +3,10 @@
 ## Project Overview
 This project implements a Convolutional Neural Network (CNN) for the classification of dermoscopic images into eight different diagnostic categories of skin cancer. The model is trained to identify various types of skin lesions from medical images, which is crucial for early detection and diagnosis of skin cancer.
 
+## lastest update
+- 06/12-2025: Add data augmentation and improve the pre-process
+- 04/08/2025: model lazy learning, low accuracy(f1-score = 0.12)
+
 ## Dataset
 The dataset consists of dermoscopic images categorized into eight different classes:
 - Actinic Keratosis (AK)
@@ -105,13 +109,9 @@ The model's performance is evaluated using:
 - ROC-AUC score for multi-class classification
 
 ## Future Improvements
-- Implement data augmentation to handle class imbalance
 - Experiment with different model architectures
 - Add transfer learning capabilities
 - Implement ensemble methods
-- Add detailed performance metrics (precision, recall, F1-score)
-- Visualize confusion matrix
-- Add ROC curves for each class
 
 ## License
 This project is for educational purposes as part of CS4486 course.
