@@ -3,9 +3,10 @@
 ## Project Overview
 This project implements a Convolutional Neural Network (CNN) for the classification of dermoscopic images into eight different diagnostic categories of skin cancer. The model is trained to identify various types of skin lesions from medical images, which is crucial for early detection and diagnosis of skin cancer.
 
-## lastest update
-- 06/12-2025: Add data augmentation, improve the pre-process and apply transfer learning(Not enough ram, need to adjust the model)
-- 04/08/2025: model lazy learning, low accuracy(f1-score = 0.12)
+## Latest Update
+- 17/12/2025: Use GPU to train model with two different data augmentation methods, first one has the best performance, saved as best_skin_model_fine_tune_1_1.keras
+- 06/12/2025: Add data augmentation, improve the pre-process and apply transfer learning (Not enough RAM, need to adjust the model)
+- 04/08/2025: Model lazy learning, low accuracy (f1-score = 0.12)
 
 ## Dataset
 The dataset consists of dermoscopic images categorized into eight different classes:
@@ -30,27 +31,25 @@ The dataset consists of dermoscopic images categorized into eight different clas
 │   ├── processed_train_data.pkl
 │   └── processed_test_data.pkl
 ├── Model/                 # Contains model training code
-│   └── model_training.ipynb
+│   ├── model_training.ipynb
+│   └── improved_model_training.ipynb
 └── Preprocessing/         # Contains data preprocessing code
+    └── data_exploration.ipynb
 ```
 
 ## Model Architecture
-The implemented CNN architecture consists of:
-- Three convolutional blocks, each containing:
-  - Two Conv2D layers with ReLU activation
-  - Batch Normalization
-  - Max Pooling
-  - Dropout for regularization
-- Fully connected layers:
-  - Flatten layer
-  - Dense layer (512 units) with ReLU activation
-  - Final dense layer with softmax activation for 8-class classification
+The improved model uses **EfficientNetB0** with transfer learning:
+- Pre-trained EfficientNetB0 backbone (ImageNet weights)
+- Global Average Pooling
+- Dense layers with Dropout for regularization
+- Final dense layer with softmax activation for 8-class classification
+- Mixed precision training (float16) for faster GPU computation
 
 ## Training Process
 - Data preprocessing:
-  - Image normalization (pixel values scaled to [0,1])
-  - One-hot encoding of labels
-  - Handling of imbalanced class distribution
+  - Image normalization using EfficientNet preprocessing
+  - Data augmentation using Albumentations library
+  - Handling of imbalanced class distribution with class weights
 - Training configuration:
   - Optimizer: Adam with learning rate 0.001
   - Loss function: Categorical Crossentropy
@@ -61,6 +60,7 @@ The implemented CNN architecture consists of:
 ### Callbacks
 - Early Stopping: Monitors validation loss with patience of 10 epochs
 - Learning Rate Reduction: Reduces learning rate by factor of 0.5 when validation loss plateaus
+- Model Checkpoint: Saves the best model based on validation accuracy
 
 ## Evaluation Metrics
 The model's performance is evaluated using multiple metrics:
@@ -75,13 +75,11 @@ The model's performance is evaluated using multiple metrics:
 - Per-class metrics for each skin cancer type
 
 ## Requirements
-- Python 3.x
-- TensorFlow
-- NumPy
-- Matplotlib
-- PIL (Python Imaging Library)
-- Pickle
-- scikit-learn
+- Python >= 3.12.3
+- CUDA >= 12.5.1 (for GPU support)
+- cuDNN >= 9 (for GPU support)
+
+See `requirements.txt` for Python package dependencies.
 
 ## Installation
 ```bash
@@ -110,11 +108,11 @@ The model's performance is evaluated using:
 
 ## Future Improvements
 - Experiment with different model architectures
-- Add transfer learning capabilities
 - Implement ensemble methods
+- Address class imbalance with advanced techniques
 
 ## License
 This project is for educational purposes as part of CS4486 course.
 
 ## Author
-ManJ0405 
+ManJ0405
